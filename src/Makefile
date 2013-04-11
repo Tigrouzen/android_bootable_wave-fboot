@@ -1,6 +1,6 @@
 vpath %.c $(SrcDir)
 
-AppObjects := 	FOTA.o \
+AppObjects :=  FOTA.o \
                s5pc110.o \
                BL3.o \
                string.o \
@@ -8,7 +8,7 @@ AppObjects := 	FOTA.o \
                header.o \
                crc32.o \
                sha1.o \
-#               atag.o \
+               atag.o \
 
             
 AppObjectsWithPath := $(patsubst %, $(ObjDir)/%, $(AppObjects))
