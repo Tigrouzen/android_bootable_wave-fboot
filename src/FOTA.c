@@ -1,7 +1,7 @@
 /*
  ; This file is part of Badadroid project.
  ;
- ; Copyright (C) 2012 Rebellos, mijoma, b_kubica
+ ; Copyright (C) 2013 Rebellos, mijoma, b_kubica, ihavenick
  ;
  ;
  ; Badadroid is free software: you can redistribute it and/or modify
@@ -23,19 +23,19 @@
 #include "BL3.h"
 #include "atag.h"
 
-
 int main(runMode_t mode)
 {
-   void* kernelImage = L"/g/zImage";
-   char* cmdlnRM = "bootmode=2 loglevel=4";
-   char* cmdln = "loglevel=4";
-   
+   void* kernelImage = L"/e/zImage";
+   char* cmdlnRM = "bootmode=2 loglevel=0";
+   char* cmdln = "loglevel=0";
+   char* cmdlnb = "bootmode=11 loglevel=0";
+
    unsigned char ATAG_buf[512]={0};
    t_stat filestat;
    fun_t kernel;
    int fd;
    unsigned long kernelSize=0;
-   
+
    //here we start the real deal :)
    int mmuctrl = MemMMUCacheEnable(gMMUL1PageTable, 1);
    disp_FOTA_Init();
@@ -44,62 +44,63 @@ int main(runMode_t mode)
    disp_FOTA_Printf("*----------------------------*");
    disp_FOTA_Printf("| Author:     mijoma         |");
    disp_FOTA_Printf("| Credits to: Rebellos       |");
+   disp_FOTA_Printf("| Credits to: ihavenick      |");
+   disp_FOTA_Printf("| Credits to: Tigrouzen      |");
    disp_FOTA_Printf("*----------------------------*");
    disp_FOTA_Printf("");
-      
+
+
    //.... Your code here...
 
    __PfsNandInit();
    __PfsMassInit();
-//   MemoryCardMount();
-   disp_FOTA_Printf("Mounted Sd Card");
+   MemoryCardMount();
    tfs4_stat(kernelImage, &filestat);
    kernelSize = filestat.st_size;
    if ((fd=tfs4_open(kernelImage, 4)) >= 0)
    {
       tfs4_read(fd, &KERNEL_BUF, kernelSize);
-      disp_FOTA_Printf("Readed kernel");
       tfs4_close(fd);
-   }   
-   
-  if (kernelSize == 0)
-   {
-   disp_FOTA_Printf("Kernel Not Found");
    }
 
    DisableMmuCache(mmuctrl);
-   disp_FOTA_Printf("Disabled MMU");
    _CoDisableMmu();
-   
-   //DRV_Modem_BootingStart
-   
-  setup_core_tag(ATAG_buf);
-  disp_FOTA_Printf("setup atag");
-  setup_serial_tag(0x123, 0x456);
-  setup_rev_tag('0');
-  if (mode == rm_FOTA_RECOVERY)
-  setup_cmdline_tag(cmdlnRM);
-  else
-  setup_cmdline_tag(cmdln);
-  setup_end_tag();
-   
+
+   setup_core_tag(ATAG_buf);
+   setup_serial_tag(0x123, 0x456);
+   setup_rev_tag('0');
+   if(mode == rm_FOTA_RECOVERY)
+{
+       setup_cmdline_tag(cmdlnRM);
+       disp_FOTA_Printf("       Recovery Mode");
+       }
+   else if(mode == rm_FOTA_BIGMEM)
+   {
+       setup_cmdline_tag(cmdlnb);
+       disp_FOTA_Printf("          BIGMEM");
+   DRV_Modem_BootingStart();
+}
+else {
+       setup_cmdline_tag(cmdln);
+   DRV_Modem_BootingStart();
+}
+   setup_end_tag();
+
    //copy kernel to the right position
    memcpy(&KERNEL_START, &KERNEL_BUF, kernelSize);
-   disp_FOTA_Printf("Copied kernel to boot");
    //SYSCON operations
-   *((unsigned int*)SYSCON_NORMAL_CFG) = 0xFFFFFFFF; 
+   *((unsigned int*)SYSCON_NORMAL_CFG) = 0xFFFFFFFF;
    _CoDisableDCache();
    _System_DisableVIC();
    _System_DisableIRQ();
    _System_DisableFIQ();
-   
    kernel = (fun_t)&KERNEL_START;
-   kernel(0, 0x891, ATAG_buf);
-   disp_FOTA_Printf("it must start now");
-   
+   kernel(0, 8500, ATAG_buf);
+
+
    //loop forever
    while(1);
-   
+
    return 0;
 
 }
