@@ -88,13 +88,13 @@ runMode_t checkFBOOT( void )
 
 KEYIFCOL = ((~(1 << 1) & (0xFF)) << 8);
 
-if((1 << 0) & (KEYIFROW & 0xFF)) //normaly its Call but all key boot Android
+if((1 << 0) & (KEYIFROW & 0xFF)) 
 {
-return rm_FOTA_ANDROID;
+return rm_FOTA_ANDROID; //normaly its Call but all key boot Android he desnt understand first ask key
 }
-if((1 << 1) & (KEYIFROW & 0xFF)) //normaly its Vol Down but seems Call
+if((1 << 1) & (KEYIFROW & 0xFF)) 
 {
-return rm_FOTA_RECOVERY;
+return rm_FOTA_RECOVERY; //normaly it ask Vol Down but seems FBOOT understand first key then came Call
 }
 if((1 << 2) & (KEYIFROW & 0xFF)) //normaly its Volume Up
 {
