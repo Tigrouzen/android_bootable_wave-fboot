@@ -1,13 +1,28 @@
-include Make_dirs
-ARMTK := c:/bada/Tools/Toolchains/ARM
+OutDir := out
+ObjDir := out
+SrcDir := src
 
-CC := $(ARMTK)/bin/arm-bada-eabi-gcc.exe
-AS := $(ARMTK)/bin/arm-bada-eabi-as.exe
-LD := $(ARMTK)/bin/arm-bada-eabi-ld.exe
-RM := $(ARMTK)/bin/rm.exe
-OBJCOPY := $(ARMTK)/bin/arm-bada-eabi-objcopy.exe
+SrcMake := src/Makefile
 
-Applications := FBOOT_S8500_b1x FBOOT_S8530_b1x FBOOT_S8500_b2x FBOOT_S8530_b2x
+ifdef SystemRoot
+	RM := del /Q
+	FixPath = $(subst /,\,$1)
+	SYS := WIN
+else
+	ifeq ($(shell uname), Linux)
+		RM := rm -f
+		FixPath = $1
+		SYS := LINUX
+	endif
+endif
+CROSS_COMPILE = C:\bada\2.0.6\Tools\Toolchains\ARM\bin
+
+CC := $(CROSS_COMPILE)\arm-bada-eabi-gcc.exe
+AS := $(CROSS_COMPILE)\arm-bada-eabi-as.exe
+LD := $(CROSS_COMPILE)\arm-bada-eabi-ld.exe
+OBJCOPY := $(CROSS_COMPILE)\arm-bada-eabi-objcopy
+
+Applications := FBOOT_S8500_b2x
 OutputFiles := $(patsubst %, $(OutDir)/%.fota, $(Applications))
 
 application: $(OutputFiles)
