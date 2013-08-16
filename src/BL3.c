@@ -98,7 +98,7 @@ return rm_FOTA_RECOVERY;
 }
 if((1 << 2) & (KEYIFROW & 0xFF)) //normaly its Volume Up
 {
-return rm_FOTA_FIRE;  //need Power + call + voldown why ?
+return rm_FOTA_FIRE;  //need Power + call + voldown why he take all key before ?
 }
 return rm_BL3; //doesnt work if we push at last need to be first but we lost key combo
 }
