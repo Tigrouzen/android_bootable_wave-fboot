@@ -90,7 +90,7 @@ KEYIFCOL = ((~(1 << 1) & (0xFF)) << 8);
 
 if((1 << 0) & (KEYIFROW & 0xFF)) 
 {
-return rm_FOTA_ANDROID; //normaly its Call but all key boot Android he desnt understand first ask key
+return rm_FOTA_ANDROID; //normaly its Call but all key boot Android he do not understand first ask key
 }
 if((1 << 1) & (KEYIFROW & 0xFF)) 
 {
