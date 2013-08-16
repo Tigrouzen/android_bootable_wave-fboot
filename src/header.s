@@ -34,14 +34,9 @@ FOTA_start:
    str     r0, a_mode
    BL      getBL3ptrs
    cmp     r0, #0
-   beq     BL3_shadow
    b       run_FBOOT
    
-   BL3_shadow: 
-   BL      BL3_Shadowing
-   LDMFD   SP!, {R0-R12,LR}
-   ldr     pc, a_bl3
-   
+
    BL3_return: 
    LDMFD   SP!, {R0-R12,PC}
    
