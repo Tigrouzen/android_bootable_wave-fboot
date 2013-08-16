@@ -84,7 +84,7 @@ int main(runMode_t mode)
        disp_FOTA_Printf("Boot Firefox");	
        DRV_Modem_BootingStart();
 }
-   if(mode == rm_FOTA_RECOFIRE)    
+   if(mode == rm_FOTA_RECOVERY)    
 {   
        setup_cmdline_tag(cmdlnRM); 
        disp_FOTA_Printf("Boot Android Recovery Mode");	
@@ -95,11 +95,10 @@ int main(runMode_t mode)
        disp_FOTA_Printf("Boot Android");
 	   DRV_Modem_BootingStart();
 	}
-   if(mode == rm_FOTA_RECOVERY)    
+   if(mode == rm_FOTA_RECOFIRE)    
 {   
        setup_cmdline_tag(cmdlnBG); 
-       disp_FOTA_Printf("Boot Firefox Recovery Mode");	
-       DRV_Modem_BootingStart();
+       disp_FOTA_Printf("Boot Firefox Recovery Mode");
 }
    setup_end_tag();
    
