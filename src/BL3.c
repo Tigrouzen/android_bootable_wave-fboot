@@ -85,18 +85,29 @@ int getBL3ptrs( void )
 
 runMode_t checkFBOOT( void )
 {
-	int i;
-   KEYIFCOL = ((~(1 << 2) & (0xFF)) << 8); //COL 2
-   for(i = 0; i < 10000; i++); //short delay
-   if((1 << 0) & (KEYIFROW & 0xFF)) //COL 2 & ROW 0 - menu key, if its high its not pressed
-	   return rm_BL3;
-   return rm_FOTA_RUN;
+
+KEYIFCOL = ((~(1 << 1) & (0xFF)) << 8);
+
+if((1 << 0) & (KEYIFROW & 0xFF)) //normaly its Call but all key boot Android
+{
+return rm_FOTA_ANDROID;
+}
+if((1 << 1) & (KEYIFROW & 0xFF)) //normaly its Vol Down but seems Call
+{
+return rm_FOTA_RECOVERY;
+}
+if((1 << 2) & (KEYIFROW & 0xFF)) //normaly its Volume Up
+{
+return rm_FOTA_FIRE;  //need Power + call + voldown why ?
+}
+return rm_BL3; //doesnt work if we push at last need to be first but we lost key combo
 }
 
-void BL3_Shadowing( void )
-{
-      //we simply copy the contents of the known bootloader to the right place and execute it from there
-      //our shadowed bootloader may be already patched to include some other features
-      memcpy(&BL3_DRAM_START, &RAW_BL3, BL3_REGION_LEN); 
-}
+   //COL 0 + ROW 0 = HOME KEY
+   //COL 0 + ROW 1 = CAM HALF KEY
+   //COL 0 + ROW 2 = CAM FULL KEY
+   //COL 1 + ROW 0 = CALL KEY
+   //COL 1 + ROW 1 = VOLDOWN KEY
+   //COL 1 + ROW 2 = VOLUP KEY
+
 
