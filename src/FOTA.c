@@ -26,10 +26,15 @@
 
 int main(runMode_t mode)
 {
-   void* kernelImage = L"";
+   void* kernelImage = L"/e/zImage";
    char* cmdlnRM = "recovery"; // rename it to make "reboot recovery" work
-   char* cmdlnBG = "firefox"; 
+   char* cmdlnBG = "bootmode=3"; 
    char* cmdln = "android";
+   
+      if(mode == rm_FOTA_FIRE)    
+{   
+  maxim_power_off;
+}
    
    unsigned char ATAG_buf[512]={0};
    t_stat filestat;
@@ -53,15 +58,7 @@ int main(runMode_t mode)
    __PfsNandInit();
    __PfsMassInit();
    MemoryCardMount();
-   if(mode == rm_FOTA_ANDROID)   
-  kernelImage = L"/e/kernel/android"; //great renamed and work
-   if(mode == rm_FOTA_RECOVERY)   
- kernelImage = L"/e/kernel/android";  //great //
-  if(mode == rm_FOTA_FIRE)    
- kernelImage = L"/e/kernel/firefox";  //great //
-  if(mode == rm_FOTA_RECOFIRE)   
-  kernelImage = L"/e/kernel/firefox"; //futur test need key combo work
-  
+
    tfs4_stat(kernelImage, &filestat);
    kernelSize = filestat.st_size;
    if ((fd=tfs4_open(kernelImage, 4)) >= 0)
@@ -78,12 +75,7 @@ int main(runMode_t mode)
    setup_core_tag(ATAG_buf);
    setup_serial_tag(0x123, 0x456);
    setup_rev_tag('0');
-   if(mode == rm_FOTA_FIRE)    
-{   
-       setup_cmdline_tag(cmdlnBG); 
-       disp_FOTA_Printf("Boot Firefox");	
-       DRV_Modem_BootingStart();
-}
+
    if(mode == rm_FOTA_RECOVERY)    
 {   
        setup_cmdline_tag(cmdlnRM); 
@@ -95,11 +87,6 @@ int main(runMode_t mode)
        disp_FOTA_Printf("Boot Android");
 	   DRV_Modem_BootingStart();
 	}
-   if(mode == rm_FOTA_RECOFIRE)    
-{   
-       setup_cmdline_tag(cmdlnBG); 
-       disp_FOTA_Printf("Boot Firefox Recovery Mode");
-}
    setup_end_tag();
    
    //copy kernel to the right position
