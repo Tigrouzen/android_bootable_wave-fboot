@@ -1,6 +1,7 @@
 #include "BL3.h"
 
 unsigned long c_MemMMUCacheEnable[] = { 0xaab9f874, 0 };
+unsigned long c_maxim_power_off[] = { 0x13d3d82d, 0 };
 unsigned long c_disp_FOTA_Init[] = { 0xbfab9174, 0 };
 unsigned long c_disp_FOTA_Printf[] = { 0xb69c410b, 0 };
 unsigned long c_OemSysGetSystemInfo[] = { 0xc3ac31a5, 0 };
@@ -15,6 +16,7 @@ unsigned long c_DRV_Modem_BootingStart[] = { 0x5557427c, 0 };
 
 
 unsigned long *fun_crc[i_endMarker] = {c_MemMMUCacheEnable,
+                                       c_maxim_power_off,
                                        c_disp_FOTA_Init,
                                        c_disp_FOTA_Printf,
                                        c_OemSysGetSystemInfo,
