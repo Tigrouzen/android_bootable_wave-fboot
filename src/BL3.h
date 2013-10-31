@@ -13,7 +13,6 @@ typedef enum
    rm_FOTA_ANDROID,
    rm_FOTA_RECOVERY,
    rm_FOTA_FIRE,
-   rm_FOTA_RECOFIRE,
    rm_FOTA_DLOAD,
 
 } runMode_t;
@@ -39,6 +38,7 @@ typedef struct
 
 enum {
    i_MemMMUCacheEnable,
+   i_maxim_power_off,
    i_disp_FOTA_Init,
    i_disp_FOTA_Printf,
    i_OemSysGetSystemInfo,
@@ -72,6 +72,7 @@ extern unsigned char* RAW_BL3;
 #define __PfsNandInit               ptr_table[i___PfsNandInit]
 #define __PfsMassInit               ptr_table[i___PfsMassInit]
 #define MemoryCardMount             ptr_table[i_MemoryCardMount]
+#define maxim_power_off             ptr_table[i_maxim_power_off]
 #define tfs4_stat                   ptr_table[i_tfs4_stat]
 #define tfs4_open                   ptr_table[i_tfs4_open]
 #define tfs4_read                   ptr_table[i_tfs4_read]
@@ -79,7 +80,7 @@ extern unsigned char* RAW_BL3;
 #define disp_FOTA_Init              ptr_table[i_disp_FOTA_Init]
 #define disp_FOTA_Printf            ptr_table[i_disp_FOTA_Printf]
 #define OemSysGetSystemInfo         ptr_table[i_OemSysGetSystemInfo]
-#define DRV_Modem_BootingStart             ptr_table[i_DRV_Modem_BootingStart]
+#define DRV_Modem_BootingStart      ptr_table[i_DRV_Modem_BootingStart]
 
 
 
