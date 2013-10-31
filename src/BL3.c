@@ -96,10 +96,6 @@ if((1 << 1) & (KEYIFROW & 0xFF))
 {
 return rm_FOTA_RECOVERY; //normaly it ask Vol Down but seems FBOOT understand first key then came Call
 }
-if((1 << 2) & (KEYIFROW & 0xFF)) //normaly its Volume Up
-{
-return rm_FOTA_FIRE;  //need Power + call + voldown why he take all key before ?
-}
 return rm_BL3; //doesnt work if we push at last need to be first but we lost key combo
 }
 
